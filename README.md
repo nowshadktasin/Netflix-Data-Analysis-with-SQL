@@ -15,7 +15,7 @@ The data in this project is structured and analyzed using SQL queries to derive 
 
 ### The Questions I set out to answer through my SQL Queries:  
 - [Count the number of Movies vs TV Shows](/Count_TV_Shows.sql)  
-- [What is the most common rating for movies and TV shows?](/sql_load/project_sql/2_common_ratings.sql)  
+- [What is the most common rating for movies and TV shows?](/Common_Rating.sql)  
 - [List all movies released in a specific year (e.g., 2020)](/sql_load/project_sql/3_movies_by_year.sql)  
 - [Which countries have the most content on Netflix?](/sql_load/project_sql/4_top_countries_with_content.sql)  
 - [Identify the longest movie](/sql_load/project_sql/5_longest_movie.sql)  
@@ -80,3 +80,49 @@ The query groups the content by its type (either "Movie" or "TV Show") and count
 These insights help understand Netflix's content strategy, focusing on both volume (movies) and engagement (TV shows) to attract and retain a diverse audience base.
 
 ---
+
+## 2. Most Common Rating for Movies and TV Shows  
+This query helps identify the most frequently occurring content ratings for both movies and TV shows in Netflix’s library. The ratings provide insight into the type of content that dominates Netflix’s offerings.
+
+```sql
+SELECT  
+    type,
+    rating,
+    count
+FROM
+    (SELECT
+        type,
+        rating,
+        COUNT(*) as count,
+        RANK() OVER (PARTITION BY type ORDER BY COUNT(*) DESC) as ranking
+    FROM netflix
+    GROUP BY 1,2
+    ) as Table1
+WHERE ranking = 1;
+```
+
+The query ranks each rating within its content type (Movies or TV Shows) based on how frequently they appear and filters out the most common rating for each type.
+
+### Table: Most Common Ratings for Movies and TV Shows on Netflix
+
+| **Type**   | **Rating** | **Count** |
+|------------|------------|-----------|
+| Movie      | TV-MA      | 2,062     |
+| TV Show    | TV-MA      | 1,145     |
+
+*Table showing the most frequent rating for movies and TV shows on Netflix.*
+
+### Key Insights:
+
+1. **TV-MA Dominance**:
+   - The rating **TV-MA** (Mature Audience) is the most common for both movies and TV shows. This rating appears **2,062** times for movies and **1,145** times for TV shows, reflecting that a significant portion of Netflix’s content is targeted toward mature audiences.
+  
+2. **Content for Adults**:
+   - The prevalence of the TV-MA rating highlights Netflix's focus on adult-oriented content, particularly in genres like drama, crime, and thriller, which often cater to mature viewers.
+
+3. **Audience Preferences**:
+   - Given that both movies and TV shows share the same most common rating, it suggests that Netflix tailors much of its library to a similar audience demographic, possibly to meet the preferences of binge-watchers and adult viewers who consume serialized content as well as standalone films.
+
+This analysis demonstrates that mature-rated content plays a central role in Netflix's catalog, offering a variety of shows and films aimed at adult audiences.
+
+--- 
