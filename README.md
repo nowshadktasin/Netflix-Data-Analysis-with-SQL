@@ -1,6 +1,3 @@
-Here's a version customized for your Netflix Movie Database analysis project:
-
----
 
 # Introduction  
 🎬 **Welcome to the Netflix Movie Database Analysis Project!** This project dives deep into Netflix’s expansive content library to uncover fascinating insights, including:  
