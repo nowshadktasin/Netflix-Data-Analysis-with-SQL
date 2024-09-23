@@ -38,9 +38,6 @@ For my in-depth analysis of the Netflix Movie Database, I relied on the followin
 - **Git & GitHub:** Crucial for version control and collaboration, ensuring my SQL analysis is accessible and trackable  
 
 ---
-Here’s a structured analysis of your first question, using the format you’ve provided:
-
----
 
 ## 1. Count of Movies vs TV Shows  
 This query helped count the number of movies versus TV shows available in the Netflix database, offering insight into the distribution of content types.
