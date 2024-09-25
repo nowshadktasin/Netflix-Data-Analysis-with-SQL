@@ -14,7 +14,7 @@ Inspired by the enormous variety of content on Netflix, this project was designe
 The data in this project is structured and analyzed using SQL queries to derive insights on ratings, genres, directors, actors, and more. It’s perfect for anyone curious about how Netflix’s global content library breaks down!
 
 ### The Questions I set out to answer through my SQL Queries:  
-- [Count the number of Movies vs TV Shows](/Count_TV_Shows.sql)  
+- [Count the number of Movies vs TV Shows](/solutions/Count_TV_Shows.sql)  
 - [What is the most common rating for movies and TV shows?](/Common_Rating.sql)  
 - [List all movies released in a specific year (e.g., 2020)](/Movies_in_specific_year.sql)  
 - [Which countries have the most content on Netflix?](/sql_load/project_sql/4_top_countries_with_content.sql)  
