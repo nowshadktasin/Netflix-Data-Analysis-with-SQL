@@ -172,3 +172,61 @@ This analysis demonstrates Netflix’s continued investment in adding original a
 
 --- 
 
+### 4. Top 5 Countries with the Most Content on Netflix
+
+This query helps to identify the countries that contribute the most content to Netflix. By analyzing the country field, we split and clean the data to get a more accurate count for each individual country.
+
+```sql
+SELECT *
+FROM(
+    SELECT
+    TRIM(UNNEST(STRING_TO_ARRAY(country,','))) AS country,
+    COUNT(*) AS count_of_content
+    FROM netflix
+    GROUP BY 1
+)
+as Table1
+WHERE country IS NOT NULL
+ORDER BY count_of_content DESC
+LIMIT 5;
+```
+
+### Explanation:
+
+1. **TRIM and UNNEST Functions**:
+   - The `TRIM()` function is used to remove any leading or trailing spaces from the country names to ensure uniformity.
+   - The `UNNEST()` function splits entries where multiple countries are listed, ensuring each country is treated individually.
+   
+2. **Grouping by Country**:
+   - The query groups the cleaned country names and counts the number of content items (movies or TV shows) from each country.
+   
+3. **Top 5 Results**:
+   - After cleaning and counting, the top 5 countries with the most Netflix content are displayed in descending order.
+
+### Table of Top 5 Countries with the Most Content:
+
+| **Country**       | **Count of Content** |
+|-------------------|----------------------|
+| United States      | 3,690                |
+| India              | 1,046                |
+| United Kingdom     | 806                  |
+| Canada             | 445                  |
+| France             | 393                  |
+
+*Table: The top 5 countries contributing the most content on Netflix.*
+
+### Key Insights:
+
+1. **United States Leading the Way**:
+   - The **United States** dominates Netflix's content library with 3,690 titles. This indicates the U.S. as the largest content producer on the platform, reflecting its robust entertainment industry.
+   
+2. **India’s Growing Contribution**:
+   - **India** ranks second with 1,046 titles, showcasing the growing influence of Indian cinema and TV shows on the global stage, with platforms like Netflix contributing to its widespread reach.
+
+3. **United Kingdom and Other Countries**:
+   - **United Kingdom** follows with 806 titles, **Canada** with 445, and **France** with 393. These countries represent strong contributors to Netflix’s international catalog, highlighting their global media influence.
+
+4. **Diversity of Content**:
+   - The top 5 countries illustrate the diverse origins of Netflix content, with a mix of North American, European, and Asian countries. This diversity caters to a broad global audience and reflects Netflix’s strategy of acquiring and producing content from around the world.
+
+This analysis provides a clear view of which countries dominate the Netflix content library, with the U.S. and India leading the charge.
