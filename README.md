@@ -233,3 +233,49 @@ LIMIT 5;
    - The top 5 countries illustrate the diverse origins of Netflix content, with a mix of North American, European, and Asian countries. This diversity caters to a broad global audience and reflects Netflix’s strategy of acquiring and producing content from around the world.
 
 This analysis provides a clear view of which countries dominate the Netflix content library, with the U.S. and India leading the charge.
+
+---
+### 5. Identify the Longest Movie
+
+This query helps identify the longest movie available on Netflix based on its duration.
+
+```sql
+WITH movie_durations AS (
+    SELECT DISTINCT 
+        title AS movie,
+        SPLIT_PART(duration, ' ', 1) :: NUMERIC AS duration
+    FROM netflix
+    WHERE type = 'Movie'
+)
+SELECT *
+FROM movie_durations
+WHERE duration = (
+    SELECT MAX(SPLIT_PART(duration, ' ', 1) :: NUMERIC)
+    FROM netflix
+    WHERE type = 'Movie'
+);
+```
+
+### Explanation:
+
+This query uses a **Common Table Expression (CTE)** to extract the duration of each movie and find the movie with the maximum duration on Netflix. It splits the `duration` string (which typically looks like "312 min") and converts the numeric part into a numerical value to identify the longest movie.
+
+### Result:
+
+| **Movie**                       | **Duration (minutes)** |
+|----------------------------------|------------------------|
+| Black Mirror: Bandersnatch       | 312                    |
+
+*Table showing the longest movie in the Netflix catalog*
+
+### Key Insights:
+
+1. **Black Mirror: Bandersnatch**:
+   - The movie **"Black Mirror: Bandersnatch"** stands out as the longest movie in Netflix's catalog, with a runtime of **312 minutes** (5 hours and 12 minutes). This makes it one of the most unique interactive movies on the platform.
+
+2. **Interactive Movie Format**:
+   - As an interactive movie, **"Bandersnatch"** allows viewers to choose different narrative paths, contributing to its extended runtime. This could be a significant reason for its long duration.
+
+This query successfully identifies the movie with the longest runtime, providing insights into the content available on Netflix and the varied formats that can lead to extended runtimes.
+
+---
