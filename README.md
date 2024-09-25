@@ -15,15 +15,12 @@ The data in this project is structured and analyzed using SQL queries to derive 
 
 ### The Questions I set out to answer through my SQL Queries:  
 - [Count the number of Movies vs TV Shows](/solutions/Count_TV_Shows.sql)  
-<<<<<<< HEAD
 - [What is the most common rating for movies and TV shows?](/solutions/Common_Rating.sql)  
 - [List all movies released in a specific year (e.g., 2020)](/solutions/Movies_in_specific_year.sql)  
 - [Which countries have the most content on Netflix?](/solutions/Top_5_Countries.sql)  
-=======
 - [What is the most common rating for movies and TV shows?](/Common_Rating.sql)  
 - [List all movies released in a specific year (e.g., 2020)](/Movies_in_specific_year.sql)  
 - [Which countries have the most content on Netflix?](/sql_load/project_sql/4_top_countries_with_content.sql)  
->>>>>>> a92ecbabe95d8e61baea26b902952bed4e07dd37
 - [Identify the longest movie](/sql_load/project_sql/5_longest_movie.sql)  
 - [Find content added in the last 5 years](/sql_load/project_sql/6_recently_added_content.sql)  
 - [Find movies/TV shows by director 'Rajiv Chilaka'](/sql_load/project_sql/7_rajiv_chilaka_content.sql)  
