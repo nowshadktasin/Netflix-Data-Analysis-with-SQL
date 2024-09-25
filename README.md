@@ -16,7 +16,7 @@ The data in this project is structured and analyzed using SQL queries to derive 
 ### The Questions I set out to answer through my SQL Queries:  
 - [Count the number of Movies vs TV Shows](/Count_TV_Shows.sql)  
 - [What is the most common rating for movies and TV shows?](/Common_Rating.sql)  
-- [List all movies released in a specific year (e.g., 2020)](/sql_load/project_sql/3_movies_by_year.sql)  
+- [List all movies released in a specific year (e.g., 2020)](/Movies_in_specific_year.sql)  
 - [Which countries have the most content on Netflix?](/sql_load/project_sql/4_top_countries_with_content.sql)  
 - [Identify the longest movie](/sql_load/project_sql/5_longest_movie.sql)  
 - [Find content added in the last 5 years](/sql_load/project_sql/6_recently_added_content.sql)  
@@ -123,3 +123,52 @@ The query ranks each rating within its content type (Movies or TV Shows) based o
 This analysis demonstrates that mature-rated content plays a central role in Netflix's catalog, offering a variety of shows and films aimed at adult audiences.
 
 --- 
+## 3. Movies Released in 2020  
+This query identifies all the movies that were released in the year 2020, helping us understand the volume and variety of content that Netflix added during that year.
+
+```sql
+SELECT 
+    title,
+    type,
+    release_year
+FROM 
+    netflix
+WHERE 
+    type = 'Movie' 
+    AND release_year = 2020;
+```
+
+This query filters the Netflix content to show only movies released in the specific year 2020.
+
+### Table: Movies Released in 2020 on Netflix
+
+| **Title**                                                     | **Type** | **Release Year** |
+|---------------------------------------------------------------|----------|------------------|
+| Dick Johnson Is Dead                                           | Movie    | 2020             |
+| Europe's Most Dangerous Man: Otto Skorzeny in Spain            | Movie    | 2020             |
+| Tughlaq Durbar                                                 | Movie    | 2020             |
+| Omo Ghetto: the Saga                                           | Movie    | 2020             |
+| Shadow Parties                                                 | Movie    | 2020             |
+| Here and There                                                 | Movie    | 2020             |
+| Shikara                                                        | Movie    | 2020             |
+| Really Love                                                    | Movie    | 2020             |
+| The Old Ways                                                   | Movie    | 2020             |
+| A Faraway Land                                                 | Movie    | 2020             |
+
+*Table showing a list of 10 movies released in 2020 on Netflix.*
+
+### Key Insights:
+
+1. **Diverse Movie Offerings**:
+   - Netflix released a variety of movies in 2020, ranging from documentaries like **"Dick Johnson Is Dead"** to international films such as **"Tughlaq Durbar"** and **"A Faraway Land"**.
+
+2. **International Productions**:
+   - Several movies in this list, such as **"Tughlaq Durbar"** and **"Omo Ghetto: the Saga"**, indicate that Netflix continues to focus on global content, catering to diverse audiences.
+
+3. **Variety of Genres**:
+   - The range of movie types suggests that Netflix added content in multiple genres in 2020, providing options for different viewer preferences. From emotional dramas like **"Really Love"** to thrillers like **"The Old Ways"**, the diversity of content helped meet the varied tastes of its audience.
+
+This analysis demonstrates Netflix’s continued investment in adding original and international movies to its platform, ensuring a wide array of content in 2020.
+
+--- 
+
