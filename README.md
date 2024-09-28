@@ -6,7 +6,7 @@
 - The longest movie on Netflix ⏳  
 - Common themes like violence and crime in content descriptions 🔪  
 
-🔎 **Curious about the SQL queries behind the analysis?** Check them out here: [project_sql folder](/sql_load/project_sql/)
+🔎 **Curious about the SQL queries behind the analysis?** Check them out here: [solutions](/solutions)
 
 # Background  
 Inspired by the enormous variety of content on Netflix, this project was designed to reveal interesting patterns and trends in the streaming giant's movie and TV show library. By analyzing key aspects such as release dates, directors, genres, and more, the project aims to highlight critical insights about content production and viewing trends.
@@ -18,13 +18,13 @@ The data in this project is structured and analyzed using SQL queries to derive 
 - [What is the most common rating for movies and TV shows?](/solutions/Common_Rating.sql)  
 - [List all movies released in a specific year (e.g., 2020)](/solutions/Movies_in_specific_year.sql)  
 - [Which countries have the most content on Netflix?](/solutions/Top_5_Countries.sql)  
-- [What is the most common rating for movies and TV shows?](/Common_Rating.sql)  
-- [List all movies released in a specific year (e.g., 2020)](/Movies_in_specific_year.sql)  
-- [Which countries have the most content on Netflix?](/sql_load/project_sql/4_top_countries_with_content.sql)  
-- [Identify the longest movie](/sql_load/project_sql/5_longest_movie.sql)  
-- [Find content added in the last 5 years](/sql_load/project_sql/6_recently_added_content.sql)  
-- [Find movies/TV shows by director 'Rajiv Chilaka'](/sql_load/project_sql/7_rajiv_chilaka_content.sql)  
-- [List TV shows with more than 5 seasons](/sql_load/project_sql/8_tv_shows_more_than_5_seasons.sql)  
+- [What is the most common rating for movies and TV shows?](/solutions/Common_Rating.sql)  
+- [List all movies released in a specific year (e.g., 2020)](/solutions/Movies_in_specific_year.sql)  
+- [Which countries have the most content on Netflix?](/solutions/Top_5_Countries.sql)  
+- [Identify the longest movie](/solutions/Longest_movie.sql)  
+- [Find content added in the last 5 years](/solutions/New_Content_Last_5_Years.sql)  
+- [Find movies/TV shows by director 'Rajiv Chilaka'](/solutions/Rajiv_Chilaka_Movies.sql)  
+- [List TV shows with more than 5 seasons](/solutions/More_than_5_Seasons.sql)  
 - [Count the number of content items per genre](/sql_load/project_sql/9_genre_counts.sql)  
 - [Top 5 years with the highest content release in India](/sql_load/project_sql/10_india_content_release.sql)  
 - [List all documentary movies](/sql_load/project_sql/11_documentaries.sql)  
@@ -55,7 +55,17 @@ GROUP BY
     type;
 ```
 
-The query groups the content by its type (either "Movie" or "TV Show") and counts the number of occurrences for each.
+
+### Explanation:
+This query counts the number of **Movies** and **TV Shows** in the `netflix` table.
+
+1. **`SELECT type`**: Retrieves the `type` column, which indicates whether the content is a Movie or TV Show.
+2. **`COUNT(type) AS count`**: Counts the occurrences of each `type` (Movie or TV Show) and labels it as `count`.
+3. **`FROM netflix`**: Specifies the source table for the data.
+4. **`GROUP BY type`**: Groups the data by `type`, so the `COUNT()` function is applied to each distinct value (Movies and TV Shows).
+
+This query helps analyze the distribution of content types in the dataset.
+
 
 ### Table: Count of Movies vs TV Shows on Netflix
 
@@ -101,7 +111,16 @@ FROM
 WHERE ranking = 1;
 ```
 
-The query ranks each rating within its content type (Movies or TV Shows) based on how frequently they appear and filters out the most common rating for each type.
+
+### Explanation:
+This query finds the **most common rating** for each content type (Movies and TV Shows).
+
+1. **`SELECT type, rating, count`**: Retrieves the `type` (Movie or TV Show), `rating`, and the corresponding count of occurrences.
+2. **`RANK() OVER (PARTITION BY type ORDER BY COUNT(*) DESC)`**: This ranks the ratings within each content type (`Movie` or `TV Show`), ordering them by their count in descending order.
+3. **`GROUP BY type, rating`**: Groups the data by both `type` and `rating`, so the count of each rating for each content type can be calculated.
+4. **`WHERE ranking = 1`**: Filters the results to show only the top-ranked (most common) rating for each content type.
+
+This query helps identify the most frequent rating for both Movies and TV Shows.
 
 ### Table: Most Common Ratings for Movies and TV Shows on Netflix
 
@@ -141,7 +160,14 @@ WHERE
     AND release_year = 2020;
 ```
 
-This query filters the Netflix content to show only movies released in the specific year 2020.
+### Explanation:
+This query lists all **movies released in 2020** from the `netflix` table.
+
+1. **`SELECT title, type, release_year`**: Retrieves the `title` of the content, its `type` (in this case, it will always be 'Movie'), and the `release_year`.
+2. **`FROM netflix`**: Specifies the `netflix` table as the source of data.
+3. **`WHERE type = 'Movie' AND release_year = 2020`**: Filters the data to include only content where the `type` is 'Movie' and the `release_year` is 2020.
+
+This query helps find all the movies that were released in the year 2020.
 
 ### Table: Movies Released in 2020 on Netflix
 
@@ -313,3 +339,90 @@ This query filters out the Netflix content added in the past five years. The que
    - Understanding which content was added in the last five years provides valuable insights into Netflix’s evolving content strategy and focus areas, such as particular genres, regions, or content types.
 
 This analysis can help users or researchers examine how Netflix's library has grown in the recent past and track the most current additions.
+
+---
+### 7. Find All Movies/TV Shows by Director 'Rajiv Chilaka'
+
+This query identifies all movies and TV shows on Netflix that are directed by **Rajiv Chilaka**. It retrieves the type of content, title, and the director's name, allowing us to explore the contributions of this director to the Netflix content library.
+
+```sql
+SELECT 
+    type,
+    title,
+    director
+FROM netflix
+WHERE director ILIKE '%Rajiv Chilaka%'
+```
+
+### Explanation:
+
+This SQL query is designed to find content directed by **Rajiv Chilaka**, a prominent name known for creating popular animated shows and movies, particularly in Indian children's programming. The query includes:
+
+1. **`ILIKE '%Rajiv Chilaka%'`**: This part of the query performs a case-insensitive search for the name "Rajiv Chilaka" within the `director` field. This ensures that any content where Chilaka is listed as a director will be retrieved, even if other co-directors are mentioned.
+   
+2. **Result Sorting**: The result displays the content type (whether it’s a movie or a TV show), the title, and the director's name.
+
+### Key Insights:
+
+1. **Content by Rajiv Chilaka**:
+   - The query returns several animated movies directed by **Rajiv Chilaka**, such as *"Mighty Raju Rio Calling"* and *"Chhota Bheem: Journey to Petra"*. These results showcase Chilaka’s major contributions, particularly in children’s animated content.
+
+2. **Collaborative Works**:
+   - In some cases, the director collaborated with others, such as in *"Mighty Raju Rio Calling"*, where **Rajiv Chilaka** worked with **Anirban Majumder** and **Alka Amarkant Dubey**.
+
+This analysis highlights Rajiv Chilaka’s impact on Netflix’s animated movie collection, with a focus on popular titles from the *Chhota Bheem* and *Mighty Raju* series.
+
+---
+### 8. List All TV Shows with More Than 5 Seasons
+
+This query focuses on TV shows on Netflix that have more than 5 seasons, identifying the longest-running series available on the platform. The SQL query retrieves the type, title, and the number of seasons for each show, helping to explore the most established TV shows on Netflix.
+
+```sql
+SELECT 
+    type,
+    title,
+    duration
+FROM netflix
+WHERE type = 'TV Show' 
+AND SPLIT_PART(duration,' ',1):: NUMERIC > 5 
+ORDER BY SPLIT_PART(duration,' ',1):: NUMERIC DESC
+LIMIT 10
+```
+
+### Explanation:
+
+1. **`SPLIT_PART(duration, ' ', 1)::NUMERIC`**: This part extracts the numeric portion of the `duration` column (which indicates the number of seasons) by splitting the string at the space and converting the result into a numeric value. This ensures that the query only considers the number of seasons when filtering the results.
+
+2. **`> 5` Seasons**: This condition filters out any shows with 5 or fewer seasons, allowing us to focus only on long-running series.
+
+3. **`LIMIT 10`**: The query limits the result to the top 10 longest-running shows on Netflix.
+
+### Table of TV Shows with More Than 5 Seasons
+
+| **Type**    | **Title**               | **Duration**   |
+|-------------|-------------------------|----------------|
+| TV Show     | Grey's Anatomy           | 17 Seasons     |
+| TV Show     | Supernatural             | 15 Seasons     |
+| TV Show     | NCIS                     | 15 Seasons     |
+| TV Show     | Heartland                | 13 Seasons     |
+| TV Show     | Red vs. Blue             | 13 Seasons     |
+| TV Show     | COMEDIANS of the world   | 13 Seasons     |
+| TV Show     | Criminal Minds           | 12 Seasons     |
+| TV Show     | Trailer Park Boys        | 12 Seasons     |
+| TV Show     | Frasier                  | 11 Seasons     |
+| TV Show     | Cheers                   | 11 Seasons     |
+
+*Table: The top 10 TV Shows with More Than 5 Seasons.*
+
+### Key Insights:
+
+1. **Long-running Series**:
+   - *Grey's Anatomy* is one of the longest-running shows on Netflix, with an impressive **17 seasons**. Other top shows like *Supernatural* and *NCIS* follow closely with **15 seasons** each.
+   
+2. **Popular Genres**:
+   - The list features a range of genres, including medical dramas (*Grey's Anatomy*), crime procedurals (*NCIS*, *Criminal Minds*), and comedy (*Cheers*, *Frasier*). This diversity indicates that long-running shows span various audience interests.
+
+3. **Fan-favorite Shows**:
+   - Shows like *Supernatural* and *Trailer Park Boys* have cultivated large fan bases, reflected in their ability to continue for many seasons.
+
+This analysis highlights Netflix's vast collection of long-running TV shows, providing viewers with extensive content to enjoy over multiple seasons.
