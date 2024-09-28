@@ -279,3 +279,37 @@ This query uses a **Common Table Expression (CTE)** to extract the duration of e
 This query successfully identifies the movie with the longest runtime, providing insights into the content available on Netflix and the varied formats that can lead to extended runtimes.
 
 ---
+### 6. Find Content Added in the Last 5 Years
+
+This query helps identify the movies and TV shows that were added to Netflix within the last five years. It retrieves the type of content, title, and the date it was added, providing insights into recent additions to the platform.
+
+```sql
+SELECT 
+    type,
+    title,
+    date_added
+FROM netflix
+WHERE TO_DATE(date_added, 'Month DD, YYYY') >= CURRENT_DATE - INTERVAL '5 years'
+AND date_added IS NOT NULL
+ORDER BY TO_DATE(date_added, 'Month DD, YYYY') DESC;
+```
+
+### Explanation:
+
+This query filters out the Netflix content added in the past five years. The query uses the following logic:
+1. **`TO_DATE(date_added, 'Month DD, YYYY')`**: This converts the `date_added` field from a string to a date format.
+2. **`CURRENT_DATE - INTERVAL '5 years'`**: This checks if the content was added within the last 5 years, comparing it against the current date.
+3. **`ORDER BY TO_DATE(date_added, 'Month DD, YYYY') DESC`**: This sorts the results in descending order, showing the most recent content first.
+
+### Key Insights:
+
+![Movies added in last 5 years](/assets/image(1).png)
+*Here is a bar graph showing the number of movies added to Netflix by year for 2019, 2020, and 2021. The year 2020 had the highest number of movies added, with 1,879 movies.*
+
+1. **Recent Additions**:
+   - The query will list all movies and TV shows added to Netflix in the last five years. This can help track recent trends in content availability and the platform's focus on new content.
+
+2. **Impact of Recent Content**:
+   - Understanding which content was added in the last five years provides valuable insights into Netflix’s evolving content strategy and focus areas, such as particular genres, regions, or content types.
+
+This analysis can help users or researchers examine how Netflix's library has grown in the recent past and track the most current additions.
