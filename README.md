@@ -25,8 +25,8 @@ The data in this project is structured and analyzed using SQL queries to derive 
 - [Find content added in the last 5 years](/solutions/New_Content_Last_5_Years.sql)  
 - [Find movies/TV shows by director 'Rajiv Chilaka'](/solutions/Rajiv_Chilaka_Movies.sql)  
 - [List TV shows with more than 5 seasons](/solutions/More_than_5_Seasons.sql)  
-- [Count the number of content items per genre](/sql_load/project_sql/9_genre_counts.sql)  
-- [Top 5 years with the highest content release in India](/sql_load/project_sql/10_india_content_release.sql)  
+- [Count the number of content items per genre](/solutions/Number_of_Content.sql)  
+- [Top 5 years with the highest content release in India](/solutions/Highest_Avg_Content_in_India.sql)  
 - [List all documentary movies](/sql_load/project_sql/11_documentaries.sql)  
 - [Find all content without a director](/sql_load/project_sql/12_no_director_content.sql)  
 - [How many movies has actor 'Salman Khan' appeared in the last 10 years?](/sql_load/project_sql/13_salman_khan_movies.sql)  
@@ -482,3 +482,53 @@ ORDER BY 2 DESC
 This breakdown helps understand the content focus of Netflix, with International Movies and Dramas being the most prominent genres, followed by Comedies and a variety of other genres that cater to diverse audience preferences.
 
 ---
+## 10. Top 5 Years with the Highest Average Content Releases in India
+
+This query was used to find the top 5 years with the highest average percentage of Netflix content added from India, providing insights into Netflix's content growth in the region over the years.
+
+### Code Explanation:
+```sql
+SELECT
+    EXTRACT(YEAR FROM(TO_DATE(date_added, 'Month DD,YYYY'))) as added_year,
+    COUNT(*) as count_of_content,
+    ROUND(
+        COUNT(*)::numeric /
+        (SELECT COUNT(*) FROM netflix WHERE country LIKE '%India%')::numeric * 100, 2) 
+        as average_content_in_a_year
+FROM netflix
+WHERE country LIKE '%India%'
+GROUP BY added_year
+ORDER BY average_content_in_a_year DESC
+LIMIT 5;
+```
+- The query starts by extracting the year from the **date_added** field using the `EXTRACT` function after converting it to a date format.
+- It counts the number of content items added for each year (`count_of_content`) where the country field contains 'India'.
+- The query then calculates the average percentage of content added in a year by dividing the yearly count by the total number of Indian content on Netflix, multiplied by 100.
+- The results are grouped by the year of addition and ordered by the highest average content percentage, with the top 5 results displayed.
+
+### Table of Top 5 Years with the Highest Average Content Releases in India
+
+| **Added Year** | **Count of Content** | **Average Content in a Year (%)** |
+|----------------|----------------------|-----------------------------------|
+| 2018           | 349                  | 33.37                            |
+| 2019           | 218                  | 20.84                            |
+| 2020           | 199                  | 19.02                            |
+| 2017           | 162                  | 15.49                            |
+| 2021           | 105                  | 10.04                            |
+
+*Table of the top 5 years with the highest average content releases in India*
+
+### Key Insights:
+1. **Peak in 2018**:
+   - **2018** had the highest average content addition with **33.37%**, showing a significant increase in Netflix's focus on Indian content during that year.
+
+2. **Consistent Growth**:
+   - The following years, **2019** and **2020**, maintained relatively high levels of content additions, with **20.84%** and **19.02%** of Netflix India's content being added in these years, respectively.
+
+3. **Earlier Years**:
+   - **2017** saw **15.49%** of Netflix India's content, indicating steady growth leading up to 2018.
+
+4. **Decline in 2021**:
+   - The year **2021** shows a lower percentage (**10.04%**), potentially indicating a shift in Netflix's content strategy or a slowdown in new Indian releases.
+
+This analysis helps track Netflix's content development in India, with 2018 marking a significant expansion of their Indian library.
