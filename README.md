@@ -426,3 +426,59 @@ LIMIT 10
    - Shows like *Supernatural* and *Trailer Park Boys* have cultivated large fan bases, reflected in their ability to continue for many seasons.
 
 This analysis highlights Netflix's vast collection of long-running TV shows, providing viewers with extensive content to enjoy over multiple seasons.
+
+---
+
+## 9. Count the Number of Content Items in Each Genre
+
+This query was used to determine the distribution of content across various genres available on Netflix.
+
+
+```sql
+SELECT 
+    TRIM(UNNEST(STRING_TO_ARRAY(listed_in,','))) AS genre,
+    COUNT (*) AS count_of_contents
+FROM netflix
+GROUP BY 1
+ORDER BY 2 DESC
+```
+### Explanation:
+- The query starts by using the `STRING_TO_ARRAY` function to split the **listed_in** column (which contains genres) by commas, and then uses `UNNEST` to expand this array into individual rows.
+- The `TRIM` function is applied to remove any extra spaces from the genres.
+- It counts the number of occurrences of each genre with `COUNT(*)` and groups them by the genre.
+- The results are ordered by the number of content items in descending order to highlight the most common genres on Netflix.
+
+### Table of Content Counts by Genre
+
+| **Genre**                   | **Count of Contents** |
+|-----------------------------|-----------------------|
+| International Movies         | 2752                 |
+| Dramas                       | 2427                 |
+| Comedies                     | 1674                 |
+| International TV Shows       | 1351                 |
+| Documentaries                | 869                  |
+| Action & Adventure           | 859                  |
+| TV Dramas                    | 763                  |
+| Independent Movies           | 756                  |
+| Children & Family Movies     | 641                  |
+| Romantic Movies              | 616                  |
+
+*Table of the number of contents in the top 10 genres on Netflix*
+
+### Key Insights:
+1. **International Movies and TV Shows**:
+   - **International Movies** top the list with 2752 content items, showing Netflix's strong focus on global cinema.
+   - **International TV Shows** also appear prominently with 1351 items, reflecting the increasing demand for non-English content worldwide.
+
+2. **Dramas**:
+   - **Dramas** is another dominant genre with 2427 content items, suggesting that Netflix audiences have a strong preference for emotionally engaging and narrative-driven stories.
+
+3. **Comedies** and **Action & Adventure**:
+   - **Comedies** rank third with 1674 titles, while **Action & Adventure** stands at 859, highlighting a balance between humor and high-energy content on Netflix's platform.
+
+4. **Documentaries**:
+   - With 869 titles, **Documentaries** showcase Netflix's commitment to providing educational and informative content.
+
+This breakdown helps understand the content focus of Netflix, with International Movies and Dramas being the most prominent genres, followed by Comedies and a variety of other genres that cater to diverse audience preferences.
+
+---
