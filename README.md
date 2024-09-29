@@ -1,3 +1,7 @@
+# Netflix Movies and TV Shows Data Analysis using SQL
+
+![](/assets/logo.png)
+
 
 # Introduction  
 🎬 **Welcome to the Netflix Movie Database Analysis Project!** This project dives deep into Netflix’s expansive content library to uncover fascinating insights, including:  
@@ -27,11 +31,11 @@ The data in this project is structured and analyzed using SQL queries to derive 
 - [List TV shows with more than 5 seasons](/solutions/More_than_5_Seasons.sql)  
 - [Count the number of content items per genre](/solutions/Number_of_Content.sql)  
 - [Top 5 years with the highest content release in India](/solutions/Highest_Avg_Content_in_India.sql)  
-- [List all documentary movies](/sql_load/project_sql/11_documentaries.sql)  
-- [Find all content without a director](/sql_load/project_sql/12_no_director_content.sql)  
-- [How many movies has actor 'Salman Khan' appeared in the last 10 years?](/sql_load/project_sql/13_salman_khan_movies.sql)  
-- [Top 10 actors in the most Indian movies](/sql_load/project_sql/14_top_actors_india_movies.sql)  
-- [Categorize content based on keywords like 'kill' and 'violence'](/sql_load/project_sql/15_bad_good_content.sql)  
+- [List all documentary movies](/solutions/All_Documentaries.sql)  
+- [Find all content without a director](/solutions/Contents_Without_Directors.sql)  
+- [How many movies has actor 'Salman Khan' appeared in the last 10 years?](/solutions/Salman_Khan_10_Year_Movies.sql)  
+- [Top 10 actors in the most Indian movies](/solutions/Top_10_Actors.sql)  
+- [Categorize content based on keywords like 'kill' and 'violence'](/solutions/Bad_Good_content.sql)  
 
 # Tools I used  
 For my in-depth analysis of the Netflix Movie Database, I relied on the following key tools:  
@@ -42,6 +46,67 @@ For my in-depth analysis of the Netflix Movie Database, I relied on the followin
 
 ---
 
+## Schema
+
+```sql
+DROP TABLE IF EXISTS netflix;
+CREATE TABLE netflix
+(
+    show_id      VARCHAR(5),
+    type         VARCHAR(10),
+    title        VARCHAR(250),
+    director     VARCHAR(550),
+    casts        VARCHAR(1050),
+    country      VARCHAR(550),
+    date_added   VARCHAR(55),
+    release_year INT,
+    rating       VARCHAR(15),
+    duration     VARCHAR(15),
+    listed_in    VARCHAR(250),
+    description  VARCHAR(550)
+);
+```
+## Explanation of the Schema
+
+The schema provided defines a table named **`netflix`**, which is designed to store detailed information about various shows and movies available on the Netflix platform. Here’s a breakdown of each column in the table:
+
+1. **show_id (VARCHAR(5))**:
+   - A unique identifier for each show or movie in the database. This ID is critical for referencing specific content.
+
+2. **type (VARCHAR(10))**:
+   - Specifies the category of the content, which can be either **"Movie"** or **"TV Show"**. This distinction is essential for filtering and analyzing different types of content.
+
+3. **title (VARCHAR(250))**:
+   - The name of the show or movie. This column stores up to 250 characters, allowing for comprehensive titles.
+
+4. **director (VARCHAR(550))**:
+   - The name(s) of the director(s) involved in creating the content. It can accommodate multiple directors if needed, up to 550 characters.
+
+5. **casts (VARCHAR(1050))**:
+   - A list of actors and actresses featured in the show or movie. This field can store extensive information (up to 1050 characters) about the cast.
+
+6. **country (VARCHAR(550))**:
+   - Indicates the country or countries where the content was produced. This is useful for categorizing content based on geographical origin.
+
+7. **date_added (VARCHAR(55))**:
+   - The date when the show or movie was added to the Netflix platform. Stored as a string for flexibility in formatting.
+
+8. **release_year (INT)**:
+   - The year in which the show or movie was originally released. This integer format allows for straightforward numerical operations, such as filtering by release date.
+
+9. **rating (VARCHAR(15))**:
+   - The content rating assigned to the show or movie (e.g., PG, R, TV-MA). This provides insight into the target audience and age appropriateness.
+
+10. **duration (VARCHAR(15))**:
+    - For movies, this indicates the total runtime (e.g., 90 minutes), while for TV shows, it typically represents the length of one episode.
+
+11. **listed_in (VARCHAR(250))**:
+    - Categories or genres that describe the content (e.g., "Action & Adventure," "Documentaries"). This field aids in organizing content for easy discovery by users.
+
+12. **description (VARCHAR(550))**:
+    - A brief summary of the show or movie, providing potential viewers with an overview of the content. This allows up to 550 characters for a concise yet informative description.
+
+# Business Problems and Solutions
 ## 1. Count of Movies vs TV Shows  
 This query helped count the number of movies versus TV shows available in the Netflix database, offering insight into the distribution of content types.
 
@@ -532,3 +597,316 @@ LIMIT 5;
    - The year **2021** shows a lower percentage (**10.04%**), potentially indicating a shift in Netflix's content strategy or a slowdown in new Indian releases.
 
 This analysis helps track Netflix's content development in India, with 2018 marking a significant expansion of their Indian library.
+
+---
+## 11. List All Movies That Are Documentaries
+
+This query was used to find and display a list of movies that belong to the "Documentaries" genre on Netflix. The results include the movie title, type (Movie), and associated genres.
+
+
+```sql
+SELECT
+    type,
+    title,
+    listed_in AS genre
+FROM netflix
+WHERE type = 'Movie' AND
+listed_in ILIKE '%Documentaries%';
+```
+
+### Explanation:
+- The query selects the **type**, **title**, and **listed_in** (renamed as **genre**) columns from the **netflix** table.
+- It filters the results to only include rows where the **type** is 'Movie' and the **listed_in** column contains the word 'Documentaries'. The `ILIKE` function is used for a case-insensitive search.
+
+### Table of Documentaries Movies
+
+| **Type** | **Title**                                               | **Genre**                                    |
+|----------|----------------------------------------------------------|----------------------------------------------|
+| Movie    | Dick Johnson Is Dead                                      | Documentaries                                |
+| Movie    | Europe's Most Dangerous Man: Otto Skorzeny in Spain       | Documentaries, International Movies          |
+| Movie    | My Heroes Were Cowboys                                    | Documentaries                                |
+| Movie    | Schumacher                                                | Documentaries, International Movies, Sports  |
+| Movie    | Blood Brothers: Malcolm X & Muhammad Ali                  | Documentaries, Sports Movies                 |
+| Movie    | The Women and the Murderer                                | Documentaries, International Movies          |
+| Movie    | If I Leave Here Tomorrow: A Film About Lynyrd Skynyrd     | Documentaries, Music & Musicals              |
+| Movie    | Untold: Breaking Point                                    | Documentaries, Sports Movies                 |
+| Movie    | Final Account                                             | Documentaries                                |
+| Movie    | Rhyme & Reason                                            | Documentaries, Music & Musicals              |
+
+*Table of documentary movies on Netflix*
+
+### Key Insights:
+1. **Diverse Genres**:
+   - Many of these movies belong to multiple genres. For example, "Schumacher" is categorized under **Documentaries**, **International Movies**, and **Sports Movies**, showcasing how documentaries can span across various themes.
+
+2. **Popular Titles**:
+   - The list includes notable titles such as **"Dick Johnson Is Dead"** and **"Blood Brothers: Malcolm X & Muhammad Ali"**, emphasizing the range of biographical and thematic documentary content available on Netflix.
+
+This query helps to identify and filter documentary-style movies on Netflix, highlighting their genre diversity and relevance across different types of content.
+
+---
+## 12. Find All Content Without a Director
+
+This query was used to retrieve all Netflix content (both Movies and TV Shows) where the director information is missing, i.e., the director field is **NULL**. The results display the type of content (TV Show), title, and a **NULL** value for the director.
+
+
+```sql
+SELECT
+    type,
+    title,
+    director
+FROM netflix
+WHERE director IS NULL;
+```
+
+### Explanation:
+- The query selects the **type**, **title**, and **director** columns from the **netflix** table.
+- It filters the results to include only those rows where the **director** column is **NULL** (i.e., no director information is present).
+
+### Table of Content Without Director Information
+
+| **Type**  | **Title**                                 | **Director** |
+|-----------|-------------------------------------------|--------------|
+| TV Show   | Blood & Water                             | NULL         |
+| TV Show   | Jailbirds New Orleans                     | NULL         |
+| TV Show   | Kota Factory                              | NULL         |
+| TV Show   | Vendetta: Truth, Lies and The Mafia       | NULL         |
+| TV Show   | Crime Stories: India Detectives           | NULL         |
+| TV Show   | Dear White People                         | NULL         |
+| TV Show   | Khawatir                                  | NULL         |
+| TV Show   | Falsa identidad                           | NULL         |
+| TV Show   | Jaguar                                    | NULL         |
+| TV Show   | Resurrection: Ertugrul                    | NULL         |
+
+*Table of Netflix content without director information*
+
+### Key Insights:
+1. **TV Shows Missing Director Data**:
+   - The list consists entirely of **TV Shows** without director information, such as **"Blood & Water"**, **"Kota Factory"**, and **"Dear White People"**.
+
+2. **Lack of Metadata**:
+   - Missing director data can affect the quality of the database and may indicate either incomplete records or content that is not typically associated with a single director.
+
+This query is useful for identifying content on Netflix that lacks essential metadata, allowing for further investigation or updating of missing details in the database.
+
+---
+
+## 13. Find How Many Movies Actor 'Salman Khan' Appeared in the Last 10 Years
+
+This query is used to find all the movies on Netflix where the actor **Salman Khan** has appeared within the last 10 years. The results display the **title** of the movie, the **cast** of actors, and the **release year**.
+
+### Code Explanation:
+```sql
+SELECT 
+    title,
+    casts,
+    release_year
+FROM netflix
+WHERE casts LIKE '%Salman Khan%'
+AND release_year >= EXTRACT(YEAR FROM CURRENT_DATE) - 10;
+```
+- The query selects the **title**, **casts**, and **release_year** columns from the **netflix** table.
+- It filters the results to include only those rows where the **casts** column contains the name **"Salman Khan"**.
+- It further filters the results to include movies that were released in the last 10 years by checking if the **release_year** is greater than or equal to the current year minus 10.
+
+### Movies Featuring Salman Khan in the Last 10 Years
+
+| **Title**                  | **Casts**                                                                                                    | **Release Year** |
+|----------------------------|--------------------------------------------------------------------------------------------------------------|------------------|
+| Prem Ratan Dhan Payo        | Salman Khan, Sonam Kapoor, Anupam Kher, Neil Nitin Mukesh, Sanjay Mishra, Swara Bhaskar, Deepak Dobriyal, etc. | 2015             |
+| Paharganj                   | Lorena Franco, Bijesh Jayarajan, Neet Chowdhary, Rajeev Gaursingh, Karran Jeet, Rajesh Sharma, Salman Khan, etc. | 2019             |
+
+*Table of movies featuring Salman Khan in the last 10 years*
+
+### Key Insights:
+1. **Salman Khan Appearances**:
+   - Two movies were identified where **Salman Khan** appeared, including **"Prem Ratan Dhan Payo"** released in 2015 and **"Paharganj"** released in 2019.
+   
+2. **Multi-star Casts**:
+   - Both films include Salman Khan as part of a larger ensemble cast with other notable actors such as **Sonam Kapoor**, **Anupam Kher**, and **Neil Nitin Mukesh**.
+
+This query helps identify content featuring the prominent actor **Salman Khan** within a specific time frame, making it useful for fans or analysts looking to explore his recent filmography on Netflix.
+
+---
+
+### Question 14: Who are the top 10 actors who have appeared in the highest number of movies produced in India?
+
+#### Query:
+```sql
+SELECT
+    TRIM(UNNEST(STRING_TO_ARRAY(casts, ','))) AS actors,
+    COUNT(*) AS count_of_movies
+FROM netflix
+WHERE country = 'India'
+GROUP BY 1
+ORDER BY 2 DESC
+LIMIT 10;
+```
+
+#### Explanation:
+
+- **Extract Actor Names**:  
+  The `STRING_TO_ARRAY` function splits the `casts` column (a comma-separated list of actors) into individual actor names. The `UNNEST` function expands these arrays into individual rows, and the `TRIM` function removes any leading or trailing spaces from the actor names.
+
+- **Filter for Indian Movies**:  
+  The `WHERE country = 'India'` clause ensures that the query only considers content produced in India.
+
+- **Count the Number of Movies**:  
+  The query groups the results by each actor's name and counts how many times each actor appears in the movies using the `COUNT(*)` function.
+
+- **Sort by Movie Count**:  
+  Results are sorted in descending order by the number of movies each actor has appeared in, using `ORDER BY 2 DESC`.
+
+- **Limit to Top 10**:  
+  The `LIMIT 10` clause restricts the output to the top 10 actors with the highest number of movie appearances.
+
+#### Result:
+The top 10 actors who have appeared in the highest number of movies produced in India are:
+
+1. **Anupam Kher** - 40 movies  
+2. **Shah Rukh Khan** - 32 movies  
+3. **Naseeruddin Shah** - 29 movies  
+4. **Amitabh Bachchan** - 28 movies  
+5. **Akshay Kumar** - 28 movies  
+6. **Paresh Rawal** - 27 movies  
+7. **Om Puri** - 26 movies  
+8. **Kareena Kapoor** - 24 movies  
+9. **Boman Irani** - 23 movies  
+10. **Salman Khan** - 20 movies
+
+![Top 10 actors of last 10 years](/assets/image(2).png)
+*Here is a bar chart displaying the top 10 actors with the most movies produced in India based on the provided data. The chart shows the number of movies each actor has appeared in, with Anupam Kher leading the list at 40 movies.*
+
+This shows that Anupam Kher has appeared in the highest number of movies, followed by Shah Rukh Khan and Naseeruddin Shah.
+
+---
+
+## 15. Categorize the Content Based on Keywords 'Kill' and 'Violence'
+
+This query is used to categorize Netflix content based on the presence of the keywords **'kill'** and **'violence'** in the description. The content is labeled as **'Bad'** if it contains these keywords and **'Good'** if it does not. The query also counts how many items fall into each category for both **TV Shows** and **Movies**.
+
+
+```sql
+SELECT
+    category,
+    type,
+    COUNT(*) as content_count
+FROM
+    (SELECT
+        *,
+        CASE
+            WHEN description ILIKE '%kill%' OR description ILIKE '%violence%' THEN 'Bad'
+            ELSE 'Good'
+        END as category FROM netflix) as Categorized_Content
+GROUP BY 1,2;
+```
+
+### Explanation:
+- The **subquery** selects all the columns from the **netflix** table and adds a new column, **category**, using a `CASE` statement:
+    - If the **description** contains the keywords **'kill'** or **'violence'**, the content is labeled as **'Bad'**.
+    - Otherwise, it is labeled as **'Good'**.
+- The **main query** groups the results by **category** and **type** (Movie or TV Show) and counts the number of content items in each category using `COUNT(*)`, storing the count in **content_count**.
+
+### Categorized Content Based on 'Kill' and 'Violence' Keywords
+
+| **Category** | **Type**   | **Content Count** |
+|--------------|------------|-------------------|
+| Good         | TV Show    | 2,585             |
+| Good         | Movie      | 5,880             |
+| Bad          | Movie      | 251               |
+| Bad          | TV Show    | 91                |
+
+*Table showing the count of categorized content based on 'kill' and 'violence' keywords*
+
+### Key Insights:
+1. **Content Without Keywords ('Good'):**
+   - The majority of the content on Netflix is labeled as **'Good'** since it does not contain the keywords **'kill'** or **'violence'**.
+   - **TV Shows**: 2,585 items are classified as **'Good'**.
+   - **Movies**: 5,880 items are classified as **'Good'**.
+
+2. **Content With Keywords ('Bad'):**
+   - A smaller portion of content is labeled as **'Bad'** because it contains the keywords **'kill'** or **'violence'**.
+   - **Movies**: 251 items are classified as **'Bad'**.
+   - **TV Shows**: 91 items are classified as **'Bad'**.
+
+This query helps categorize content into **Good** or **Bad** based on the presence of certain violent keywords, providing insight into the nature of content available on Netflix.
+
+---
+
+# Conclusion
+Based on the insights gathered from the analysis of Netflix data through 15 SQL queries, several key findings emerge for anyone looking to understand the content landscape and make data-driven decisions:
+
+### **1. Content Distribution:**
+- **Diverse Content Types**: 
+  - The analysis revealed a vast array of content types on Netflix, with a significant emphasis on movies and TV shows. Understanding this distribution aids in recognizing viewer preferences and tailoring content strategies accordingly.
+
+### **2. Popular Genres and Trends:**
+- **Genre Insights**: 
+  - By categorizing content and counting the occurrences of specific genres, we identified the most popular categories among viewers. This information is invaluable for content acquisition and marketing strategies, ensuring alignment with audience interests.
+
+### **3. Actor Contributions:**
+- **Actor Visibility**:
+  - The queries highlighted the significant presence of key actors, such as **Salman Khan** and **Anupam Kher**, in Netflix’s catalog. This can inform casting decisions and promotional strategies, leveraging star power to enhance viewership.
+
+### **4. Time-Based Content Analysis:**
+- **Recent Releases**:
+  - Time-based queries allowed us to track content added in the last decade, providing insights into trends over time. This is crucial for understanding shifts in viewer preferences and planning future content releases.
+
+### **5. Keyword Categorization:**
+- **Content Quality Assessment**:
+  - The ability to categorize content based on keywords like "kill" and "violence" enabled a nuanced understanding of viewer perceptions regarding content quality. This can inform content guidelines and marketing messaging.
+
+### **6. Analytical Query Skills:**
+- **Enhanced SQL Proficiency**:
+  - The analysis process improved skills in complex query construction, data aggregation, and using advanced SQL functions such as UNNEST and DATE manipulation. These skills are essential for future data-driven analyses and decision-making.
+
+### **7. Actionable Insights for Netflix Strategy:**
+- **Strategic Content Development**:
+  - Overall, these insights can guide Netflix in its content development strategy, ensuring that the platform remains responsive to audience demands while maximizing viewer engagement through data-driven decision-making.
+
+This comprehensive analysis underscores the importance of leveraging data to understand viewer behavior and optimize content offerings, ultimately contributing to Netflix's ongoing success in a competitive streaming market.
+
+---
+
+# What I Learned
+During my analysis of Netflix data, I significantly enhanced my SQL skills:
+
+- 📈 **Content Categorization:** Learned to classify content using keywords, effectively labeling items based on their descriptions to gain insights into viewer trends and preferences.
+
+- 📅 **Time-Based Analysis:** Developed the ability to manipulate dates, allowing me to filter and analyze data over specific time frames, such as identifying content released in the last 10 years, which is crucial for understanding trends in viewership.
+
+- 🔄 **Data Aggregation and Grouping:** Mastered the use of aggregate functions and GROUP BY clauses to summarize and count content across various dimensions, revealing key insights about genres, actors, and release years.
+
+- 🧩 **UNNEST STRING TO ARRAY:** Gained proficiency in using the UNNEST function with STRING_TO_ARRAY to break down and analyze multiple values within a single column, enhancing my ability to work with complex data structures.
+
+- 🎬 **Complex Query Construction:** Gained confidence in constructing complex queries with nested SELECT statements and window functions, enhancing my ability to extract detailed insights from the dataset.
+
+- 🔍 **Analytical Thinking:** Improved my problem-solving skills by turning specific business questions into actionable SQL queries, enabling a deeper understanding of the Netflix content landscape.
+
+This experience has empowered me with the skills to analyze large datasets effectively and derive meaningful insights, paving the way for future data-driven decision-making.
+
+
+### **Summary of Insights:**
+
+- **Content Diversity**: Netflix hosts a wide variety of content, with a nearly equal balance between **Movies** and **TV Shows**. The platform is heavily populated with Movies, which make up a larger portion of the content library.
+  
+- **Regional Content Dominance**: Certain countries, particularly **India**, contribute significantly to Netflix’s content catalog. India ranks among the top contributors in terms of content volume, including a high number of **movies** featuring prominent actors like **Anupam Kher** and **Shah Rukh Khan**.
+
+- **Popular Genres**: **Documentaries** are a notable genre on Netflix, with many titles categorized as such. This genre appeals to a broad audience, and Netflix offers numerous documentary films across a range of topics, from biographies to historical events.
+
+- **Director and Cast Trends**: A significant number of Netflix content items lack a listed **director**, especially in the **TV Show** category. Meanwhile, actors like **Anupam Kher**, **Shah Rukh Khan**, and **Akshay Kumar** dominate Indian-produced movies, appearing frequently across multiple titles.
+
+- **Content Categorization**: The categorization of content based on keywords such as **'kill'** and **'violence'** reveals that most of the content is labeled **'Good'**, indicating a broader offering of family-friendly content. A smaller but notable portion is labeled **'Bad'**, reflecting violent or intense themes.
+
+- **Recent Trends**: In the last decade, Netflix has seen a consistent stream of content releases, with major actors like **Salman Khan** appearing in movies from 2015 to 2019. This showcases Netflix's ability to continually offer popular content featuring Bollywood stars.
+
+- **Seasoned Shows**: TV Shows with more than **5 seasons** are limited but are generally well-established titles, reflecting their sustained popularity and long-term viewer engagement.
+
+This analysis highlights Netflix's broad content offering, with an emphasis on Indian films, popular genres like documentaries, and detailed breakdowns of content without directors or violent themes. These insights are useful for understanding the platform’s diverse content strategies and regional trends.
+
+### **Closing Thoughts**:
+This project significantly enhanced my SQL skills and deepened my understanding of the Netflix content landscape through the analysis of 15 targeted queries. The insights gained from this analysis serve as a guide for both content strategists and data analysts in identifying viewer preferences and optimizing content offerings. 
+
+By examining various aspects such as content distribution, genre popularity, actor contributions, and keyword categorization, I gained valuable perspectives on how data can inform strategic decisions in the streaming industry. This exploration not only highlights the importance of effective data analysis but also underscores the need for continuous learning and adaptation to emerging trends within the rapidly evolving entertainment sector.
+
+Ultimately, the ability to leverage data insights is essential for driving growth and enhancing viewer engagement. As I move forward, I aim to apply these analytical skills in real-world scenarios, contributing to data-driven decision-making and delivering impactful results in the field of data analysis.
